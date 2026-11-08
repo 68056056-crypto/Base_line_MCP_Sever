@@ -1,0 +1,19 @@
+services:
+  seismic-mcp:
+    build: .
+    image: seismic-mcp:0.1.0
+    container_name: seismic-mcp
+    ports:
+      - "8000:8000"
+    environment:
+      MCP_TRANSPORT: streamable-http
+      PORT: "8000"
+      MCP_PATH: /mcp
+      SEISMIC_TZ: Asia/Bangkok
+      LOG_LEVEL: INFO
+      # DNS-rebinding protection: list the Host headers clients will use.
+      # Leave empty to disable (OK for local dev behind localhost only).
+      ALLOWED_HOSTS: "localhost:*,127.0.0.1:*,host.docker.internal:*"
+      ALLOWED_ORIGINS: "http://localhost:*,http://127.0.0.1:*"
+      # MCP_STATELESS: "true"   # enable for horizontal scaling behind a load balancer
+    restart: unless-stopped
